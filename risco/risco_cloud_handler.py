@@ -1,7 +1,9 @@
-import requests
 import logging
+
+import requests
+
 from risco.static import RISCO_BASE_URL, ENDPOINTS
-from risco.auth import PinAuth, UserAuth
+
 
 # TODO: Remove stupid error logic and use raise_for_status, catch this and try to login.
 # TODO: Close session
@@ -15,6 +17,10 @@ class RiscoCloudHandler(object):
         self.session_active = False
         self.user_auth = user_auth
         self.pin_auth = pin_auth
+
+    def __del__(self):
+        self.session.close()
+        self.session_active = False
 
     def login(self):
         endpoint = RISCO_BASE_URL + ENDPOINTS['AUTH']
@@ -39,7 +45,11 @@ class RiscoCloudHandler(object):
         return self._set_session_active(resp)
 
     def get_overview(self):
-        raise NotImplemented()
+        endpoint = RISCO_BASE_URL + ENDPOINTS['GET_OVERVIEW']
+        logging.debug("Hitting: %s" % endpoint)
+        resp = self.session.post(endpoint)
+
+        return resp.json()
 
     def get_state(self):
         endpoint = RISCO_BASE_URL + ENDPOINTS['GETCPSTATE'] + "?userIsAlive=true"
