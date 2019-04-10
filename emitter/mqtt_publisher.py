@@ -1,6 +1,7 @@
 import paho.mqtt.publish as publish
 
-VALID_ALARM_STATES = ["disarmed", "armed_home", "armed_away", "armed_night", "pending", "triggered"]
+from static import AlarmStates
+
 
 class MQTTPublisher(object):
 
@@ -17,7 +18,7 @@ class MQTTPublisher(object):
             self.auth['password'] = self.password
 
     def publish_state(self, state):
-        if state in VALID_ALARM_STATES:
-            return publish.single("home/alarm", state, hostname=self.host, port=self.port, auth=self.auth, retain=True)
+        if state in AlarmStates:
+            return publish.single("home/alarm", state.value, hostname=self.host, port=self.port, auth=self.auth, retain=True)
 
         raise ValueError("Invalid alarm state: %s" % state)
