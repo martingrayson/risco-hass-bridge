@@ -1,7 +1,9 @@
-import unittest
 import os
-from risco.risco_cloud_handler import RiscoCloudHandler
+import unittest
+
 from risco.auth import PinAuth, UserAuth
+from risco.risco_cloud_handler import RiscoCloudHandler
+from static import AlarmStates
 
 
 class TestRiscoCloudHandler(unittest.TestCase):
@@ -29,3 +31,11 @@ class TestRiscoCloudHandler(unittest.TestCase):
 
         # shitty test
         self.assertTrue('IsOffline' in resp)
+
+    def test_get_arm_status(self):
+        rch = RiscoCloudHandler(self.user, self.pin)
+        rch.login()
+        rch.select_site()
+
+        # Suboptimal, only passes if im home :( Really need to stub the api
+        self.assertEqual(rch.get_arm_status(), AlarmStates.DISARMED)
