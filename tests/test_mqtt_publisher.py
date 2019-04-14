@@ -2,7 +2,7 @@ import os
 import unittest
 
 from emitter.mqtt_publisher import MQTTPublisher
-from static import AlarmStates
+from hass.static import AlarmStates
 
 
 class TestMQTTPublisher(unittest.TestCase):

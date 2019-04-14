@@ -1,0 +1,34 @@
+{
+  "name": "Risco HASS Bridge",
+  "version": "0.0.1",
+  "slug": "risco_hass_bridge",
+  "description": "Sync Risco Alarm System to HASS",
+  "url": "https://github.com/martingrayson/risco-hass-bridge",
+  "startup": "before",
+  "arch": [
+    "aarch64",
+    "amd64",
+    "armhf",
+    "i386"
+  ],
+  "stdin": true,
+  "hassio_api": true,
+  "hassio_role": "manager",
+  "boot": "auto",
+  "map": [
+    "backup",
+    "share"
+  ],
+  "options": {
+    "username": "test",
+    "password": "test",
+    "pin": "1234",
+    "site_id": "test"
+  },
+  "schema": {
+    "username": "str",
+    "password": "str",
+    "pin": "str",
+    "site_id": "str"
+  }
+}

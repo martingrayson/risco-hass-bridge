@@ -1,9 +1,9 @@
 import os
 import unittest
 
+from hass.static import AlarmStates
 from risco.auth import PinAuth, UserAuth
 from risco.risco_cloud_handler import RiscoCloudHandler
-from static import AlarmStates
 
 
 class TestRiscoCloudHandler(unittest.TestCase):

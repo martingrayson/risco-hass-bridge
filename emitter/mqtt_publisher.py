@@ -1,6 +1,6 @@
 import paho.mqtt.publish as publish
 
-from static import AlarmStates
+from hass.static import AlarmStates
 
 
 class MQTTPublisher(object):
@@ -17,7 +17,7 @@ class MQTTPublisher(object):
         if password:
             self.auth['password'] = self.password
 
-    def publish_state(self, state):
+    def publish_state(self, state: AlarmStates):
         if state in AlarmStates:
             return publish.single("home/alarm", state.value, hostname=self.host, port=self.port, auth=self.auth, retain=True)
 

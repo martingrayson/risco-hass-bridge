@@ -2,18 +2,16 @@ import logging
 
 import requests
 
-from risco.static import RISCO_BASE_URL, ENDPOINTS
-# TODO: Add auth types
-from static import AlarmStates
+from hass.static import AlarmStates
+from risco.static import RISCO_BASE_URL, ENDPOINTS, AlarmCommands
 
 
 # TODO: Remove stupid error logic and use raise_for_status, catch this and try to login.
-# TODO: Close session
-
+# TODO: Close session and manage better
+# TODO: This credential handling is dumb, maybe use marshmallo with 2 schemas and one auth object.
 
 class RiscoCloudHandler(object):
 
-    # TODO: This credential handling is dumb, maybe use marshmallo with 2 schemas and one auth object.
     def __init__(self, user_auth, pin_auth):
         self.session = requests.session()
         self.session_active = False
@@ -58,17 +56,28 @@ class RiscoCloudHandler(object):
         part_info = sys_overview.get('overview', {}).get('partInfo', {})
 
         # Currently unable to cope with partitions being in different states.
-
         # Not well guarded, change this.
         state = None
         if int(part_info.get('armedStr')[0]) > 0:
             state = AlarmStates.ARMED
         elif int(part_info.get('disarmedStr')[0]) > 0:
             state = AlarmStates.DISARMED
-        elif int(part_info.get('partarmedStr')[0] > 0):
+        elif int(part_info.get('partarmedStr')[0]) > 0:
             state = AlarmStates.PART_ARMED
 
         return state
+
+    def set_arm_status(self, arm_status: AlarmCommands):
+        endpoint = RISCO_BASE_URL + ENDPOINTS['SETARMSTATUS']
+        logging.debug("Hitting: %s" % endpoint)
+
+        data = {
+            "type": "0:{}".format(arm_status.value),
+            "bypassZoneId": -1,
+            "armcode": ""
+        }
+        resp = self.session.post(endpoint, data)
+        return resp.json()
 
     def get_state(self):
         endpoint = RISCO_BASE_URL + ENDPOINTS['GETCPSTATE'] + "?userIsAlive=true"

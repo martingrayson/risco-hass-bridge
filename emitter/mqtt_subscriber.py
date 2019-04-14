@@ -33,9 +33,7 @@ class MQTTSubscriber(object):
         if password:
             self.auth['password'] = self.password
 
-    def subscribe(self, topic):
-        subscribe.callback(self.on_message_print, topic, hostname=self.host, port=self.port, auth=self.auth)
+    def subscribe(self, topic, cb):
+        subscribe.callback(cb, topic, hostname=self.host, port=self.port, auth=self.auth)
 
-    def on_message_print(self, client, userdata, message):
-        print("%s %s" % (message.topic, message.payload))
 
