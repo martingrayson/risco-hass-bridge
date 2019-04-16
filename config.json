@@ -30,5 +30,6 @@
     "password": "str",
     "pin": "str",
     "site_id": "str"
-  }
+  },
+  "image": "mgrayson/{arch}-risco-hass-bridge"
 }
