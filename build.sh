@@ -6,7 +6,6 @@ docker run -it --rm --privileged --name "risco-hass-bridge" \
     hassioaddons/build-env:latest \
     --git \
     --armhf \
-    --push \
     --from "homeassistant/{arch}-base" \
     --author "Martin Grayson <martin@mgrayson.co.uk>" \
     --tag-latest \
