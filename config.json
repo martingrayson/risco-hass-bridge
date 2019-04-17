@@ -31,5 +31,5 @@
     "pin": "str",
     "site_id": "str"
   },
-  "image": "mgrayson/armhf-risco-hass-bridge"
+  "image": "mgrayson/{arch}-risco-hass-bridge"
 }
