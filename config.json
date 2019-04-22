@@ -19,17 +19,26 @@
     "backup",
     "share"
   ],
+  "services": [
+    "mqtt:need"
+  ],
   "options": {
-    "username": "test",
-    "password": "test",
-    "pin": "1234",
-    "site_id": "test"
+    "poll_interval": 120,
+    "risco": {
+      "username": "test",
+      "password": "test",
+      "pin": "1234",
+      "site_id": "test"
+    }
   },
   "schema": {
-    "username": "str",
-    "password": "str",
-    "pin": "str",
-    "site_id": "str"
+    "poll_interval": "int",
+    "risco": {
+      "username": "str",
+      "password": "str",
+      "pin": "str",
+      "site_id": "str"
+    }
   },
   "image": "mgrayson/{arch}-risco-hass-bridge"
 }
