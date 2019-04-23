@@ -8,7 +8,7 @@ COPY risco-bridge /risco-bridge
 
 # Setup base
 RUN apk add --no-cache python3 python3-dev jq && \
-    pip3 install -r risco-bridge/requirements.txt
+    pip3 install -r /risco-bridge/requirements.txt
 
 # Copy data for add-on
 COPY run.sh /
