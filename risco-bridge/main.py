@@ -21,6 +21,9 @@ class RiscoHassBridge(LoggingMixin):
     def run(self):
         self.logger.debug("Starting polling loop (%i sec).", self.poll_interval)
 
+        self.risco.login()
+        self.risco.select_site()
+
         while True:
             time.sleep(self.poll_interval)
             self.mqtt_pub.publish_state(self.risco.get_arm_status())
