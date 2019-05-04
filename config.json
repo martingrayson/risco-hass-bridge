@@ -30,6 +30,12 @@
       "password": "test",
       "pin": "1234",
       "site_id": "test"
+    },
+    "mqtt": {
+      "host": "localhost",
+      "port": 1833,
+      "username": "test",
+      "password": "test"
     }
   },
   "schema": {
@@ -39,6 +45,12 @@
       "password": "str",
       "pin": "str",
       "site_id": "str"
+    },
+    "mqtt": {
+      "host": "str",
+      "port": "int?",
+      "username": "str?",
+      "password": "str?"
     }
   },
   "image": "mgrayson/{arch}-risco-hass-bridge"
