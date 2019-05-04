@@ -33,7 +33,7 @@
     },
     "mqtt": {
       "host": "localhost",
-      "port": 1833,
+      "port": 1883,
       "username": "test",
       "password": "test"
     }
