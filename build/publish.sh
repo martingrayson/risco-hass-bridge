@@ -14,6 +14,9 @@ fi
 
 git status
 
+sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+sudo chmod g+rwx "/home/$USER/.docker" -R
+
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 docker run -it --rm --privileged --name "risco-hass-bridge" \
