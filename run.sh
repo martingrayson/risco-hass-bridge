@@ -23,5 +23,5 @@ RISCO_PASSWORD=$(jq --raw-output ".risco.password" $CONFIG_PATH)
 RISCO_PIN=$(jq --raw-output ".risco.pin" $CONFIG_PATH)
 RISCO_SITE=$(jq --raw-output ".risco.site_id" $CONFIG_PATH)
 
-python ${APP_ENTRYPOINT} --mqtt_host ${HOST} --mqtt_port ${PORT} --mqtt_username ${USER} --mqtt_password ${PASSWORD} \
+python3 ${APP_ENTRYPOINT} --mqtt_host ${HOST} --mqtt_port ${PORT} --mqtt_username ${USER} --mqtt_password ${PASSWORD} \
     --risco_username ${RISCO_USER} --risco_password ${RISCO_PASSWORD}  --risco_pin ${RISCO_PIN}  --risco_site_id ${RISCO_SITE}
