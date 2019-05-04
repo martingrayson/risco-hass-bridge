@@ -1,13 +1,4 @@
 - Fix build process. Tagging is a pita
-- Setup a submodule to refer to this repo.
 - Actually integrate the code, first get the risco polling working.
-- /data/options.json is your actual config json
 - how to interface with built in broker - discovery?
-
-
-
-Why dont buld args work??
-
-export BUILD_FROM="homeassistant/armhf-base:latest"
-docker build -t local/risco-hass-bridge .
-docker run --rm --privileged -v /Users/martingrayson/Desktop/hass_temp_test:/data local/risco-hass-bridge
+- dont store config in other repo
