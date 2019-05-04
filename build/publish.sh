@@ -1,4 +1,19 @@
-#echo "$DOCKER_PASSWORD" | docker login -u ${DOCKER_USERNAME} --password-stdin
+#!/bin/bash
+set -ev
+
+if [ ! -z ${TRAVIS_TAG} ]; then
+    echo "Tagged build found. Pushing to Docker with tag 'latest'."
+else
+    # DIFF="$(git diff HEAD^ HEAD dropbox-sync)"
+    # if [ -z $DIFF ]; then
+    #     echo "No changes in Dropbox Sync add-on. Skipping docker push."
+    #     exit 0
+    # fi
+    echo "No tag found. Pushing to Docker with tag 'test'."
+fi
+
+git status
+
 docker run -it --rm --privileged --name "risco-hass-bridge" \
     -v ~/.docker:/root/.docker \
     -v "$(pwd)":/docker \

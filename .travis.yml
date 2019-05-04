@@ -4,4 +4,4 @@ services:
 script:
 - $TRAVIS_BUILD_DIR/build/build.sh
 after_success:
-- $TRAVIS_BUILD_DIR/build/distribute.sh
+- $TRAVIS_BUILD_DIR/build/publish.sh

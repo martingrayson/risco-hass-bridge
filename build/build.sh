@@ -1,4 +1,11 @@
-##echo "$DOCKER_PASSWORD" | docker login -u ${DOCKER_USERNAME} --password-stdin
+#!/bin/bash
+set -ev
+if [ -z ${TRAVIS_TAG} ]; then
+    echo "Untagged build found."
+else
+    echo "New git tagged build found."
+fi
+
 docker run -it --privileged --rm --name "risco-hass-bridge" \
     -v ~/.docker:/root/.docker \
     -v "$(pwd)":/docker \
