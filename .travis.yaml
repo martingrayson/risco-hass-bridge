@@ -1,4 +1,7 @@
-language: bash
-
+sudo: required
+services:
+- docker
 script:
-    - bash build/publish.sh
+- $TRAVIS_BUILD_DIR/build/build.sh
+after_success:
+- $TRAVIS_BUILD_DIR/build/distribute.sh
