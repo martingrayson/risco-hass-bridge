@@ -1,8 +1,7 @@
-- Fix build process. Do I need travis? Tagging is a pita
+- Fix build process. Tagging is a pita
 - Setup a submodule to refer to this repo.
 - Actually integrate the code, first get the risco polling working.
 - /data/options.json is your actual config json
-
 - how to interface with built in broker - discovery?
 
 
