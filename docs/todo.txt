@@ -2,3 +2,4 @@
 - Actually integrate the code, first get the risco polling working.
 - how to interface with built in broker - discovery?
 - dont store config in other repo
+- fix poll interval

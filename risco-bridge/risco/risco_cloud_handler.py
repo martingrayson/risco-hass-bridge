@@ -13,7 +13,6 @@ class RiscoCloudHandler(LoggingMixin):
 
     def __init__(self, user_auth, pin_auth):
         self.session = requests.session()
-        self.session_active = False
         self.user_auth = user_auth
         self.pin_auth = pin_auth
 
@@ -22,28 +21,37 @@ class RiscoCloudHandler(LoggingMixin):
         self.session_active = False
 
     def login(self):
+        if self._is_expired():
+            self._authenticate()
+            self._select_site()
+
+    def _authenticate(self):
         endpoint = RISCO_BASE_URL + ENDPOINTS['AUTH']
         self.logger.debug("Hitting: %s" % endpoint)
         resp = self.session.post(endpoint, data=self.user_auth.to_json())
+        resp.raise_for_status()
 
-        return self._set_session_active(resp)
-
-    def _set_session_active(self, resp):
-        if resp:
-            self.session_active = (200 <= resp.status_code < 400)
-        else:
-            self.session_active = False
-
-        return self.session_active
-
-    def select_site(self):
+    def _select_site(self):
         endpoint = RISCO_BASE_URL + ENDPOINTS['SITE_SELECT']
         self.logger.debug("Hitting: %s" % endpoint)
         resp = self.session.post(endpoint, data=self.pin_auth.to_json())
+        resp.raise_for_status()
 
-        return self._set_session_active(resp)
+    # TODO: Make this a decorator
+    def _is_expired(self):
+        endpoint = RISCO_BASE_URL + ENDPOINTS['CHECK_EXPIRED']
+        self.logger.debug("Hitting: %s" % endpoint)
+        resp = self.session.post(endpoint)
+        resp_message = resp.json()
+
+        expired_flag = True
+        if resp_message.get('error', 0) == 0 and not resp_message.get('pinExpired', False):
+            expired_flag = False
+
+        return expired_flag
 
     def _get_overview(self):
+        self.login()
         endpoint = RISCO_BASE_URL + ENDPOINTS['GET_OVERVIEW']
         self.logger.debug("Hitting: %s" % endpoint)
         resp = self.session.post(endpoint)
@@ -67,7 +75,8 @@ class RiscoCloudHandler(LoggingMixin):
         return state
 
     def set_arm_status(self, arm_status: AlarmCommands):
-        endpoint = RISCO_BASE_URL + ENDPOINTS['SETARMSTATUS']
+        self.login()
+        endpoint = RISCO_BASE_URL + ENDPOINTS['SET_ARM_STATUS']
         self.logger.debug("Hitting: %s" % endpoint)
 
         data = {
@@ -79,7 +88,8 @@ class RiscoCloudHandler(LoggingMixin):
         return resp.json()
 
     def get_state(self):
-        endpoint = RISCO_BASE_URL + ENDPOINTS['GETCPSTATE'] + "?userIsAlive=true"
+        self.login()
+        endpoint = RISCO_BASE_URL + ENDPOINTS['GET_CP_STATE'] + "?userIsAlive=true"
         self.logger.debug("Hitting: %s" % endpoint)
         resp = self.session.post(endpoint)
 

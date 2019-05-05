@@ -6,8 +6,8 @@ ENDPOINTS = {
     "SITE_SELECT": "SiteLogin",
     "GET_EVENT_HISTORY": "EventHistory/Get",
     "GET_OVERVIEW": "Overview/Get",
-    "GETCPSTATE": "Security/GetCPState",
-    "SETARMSTATUS": "Security/ArmDisarm",
+    "GET_CP_STATE": "Security/GetCPState",
+    "SET_ARM_STATUS": "Security/ArmDisarm",
     "CHECK_EXPIRED": "SystemSettings/IsUserCodeExpired"
 }
 
