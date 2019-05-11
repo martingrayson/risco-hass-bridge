@@ -19,7 +19,6 @@ rch = RiscoCloudHandler(UserAuth(os.environ.get('RISCO_USERNAME'), os.environ.ge
 
 
 rch.login()
-rch.select_site()
 mp = MQTTPublisher("10.0.10.40", username=os.environ['MQTT_USERNAME'], password=os.environ['MQTT_PASSWORD'])
 mp.publish_state(rch.get_arm_status())
 
