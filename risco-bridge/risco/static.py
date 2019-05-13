@@ -11,7 +11,6 @@ ENDPOINTS = {
     "CHECK_EXPIRED": "SystemSettings/IsUserCodeExpired"
 }
 
-
 class AlarmCommand(Enum):
     ARM = "armed"
     DISARM = "disarmed"

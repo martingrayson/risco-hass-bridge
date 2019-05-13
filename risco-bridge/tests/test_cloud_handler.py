@@ -14,17 +14,16 @@ class TestRiscoCloudHandler(unittest.TestCase):
 
     def test_login(self):
         rch = RiscoCloudHandler(self.user, self.pin)
-        response = rch.login()
-        self.assertIsNone(response)
+        response = rch._authenticate()
+        self.assertTrue(response.status_code == 200)
 
     def test_select_site(self):
         rch = RiscoCloudHandler(self.user, self.pin)
-        response = rch.login()
-        self.assertIsNone(response)
+        response = rch._select_site()
+        self.assertTrue(response.status_code == 200)
 
     def test_get_state(self):
         rch = RiscoCloudHandler(self.user, self.pin)
-        rch.login()
         resp = rch.get_state()
 
         # shitty test
@@ -32,7 +31,6 @@ class TestRiscoCloudHandler(unittest.TestCase):
 
     def test_get_arm_status(self):
         rch = RiscoCloudHandler(self.user, self.pin)
-        rch.login()
 
         # Suboptimal, only passes if im home :( Really need to stub the api
         self.assertEqual(rch.get_arm_status(), AlarmState.DISARMED)
