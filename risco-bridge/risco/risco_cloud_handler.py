@@ -19,7 +19,7 @@ class RiscoCloudHandler(LoggingMixin):
         :param user_auth:
         :param pin_auth:
         """
-        self.session = None
+        self.session = requests.session()
         self.user_auth = user_auth
         self.pin_auth = pin_auth
 
@@ -27,7 +27,8 @@ class RiscoCloudHandler(LoggingMixin):
         """
         Kill session on closing up.
         """
-        self.session.close()
+        if self.session:
+            self.session.close()
 
     def login(self):
         """
@@ -68,10 +69,10 @@ class RiscoCloudHandler(LoggingMixin):
         """
         endpoint = RISCO_BASE_URL + ENDPOINTS['CHECK_EXPIRED']
         self.logger.debug("Hitting: %s" % endpoint)
-        resp = self.session.post(endpoint)
-        resp_message = resp.json()
 
         try:
+            resp = self.session.post(endpoint)
+            resp_message = resp.json()
             resp.raise_for_status()
         except Exception as e:
             self.logger.error(e)
