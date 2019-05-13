@@ -1,6 +1,6 @@
 import paho.mqtt.publish as publish
 
-from hass.static import AlarmStates
+from hass.static import AlarmState
 from util.logging_mixin import LoggingMixin
 
 
@@ -18,8 +18,8 @@ class MQTTPublisher(LoggingMixin):
         if password:
             self.auth['password'] = self.password
 
-    def publish_state(self, state: AlarmStates):
-        if state in AlarmStates:
+    def publish_state(self, state: AlarmState):
+        if state in AlarmState:
             self.logger.debug(f"Publishing state %s to %s ", state.value, self.host)
             return publish.single("home/alarm", state.value,
                                   hostname=self.host, port=self.port, auth=self.auth, retain=True)

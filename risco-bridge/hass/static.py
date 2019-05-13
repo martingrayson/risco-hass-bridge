@@ -1,9 +1,9 @@
 from enum import Enum
 
-from risco.static import AlarmCommands as RiscoAlarmCommands
+from risco.static import AlarmCommand as RiscoAlarmCommands
 
 
-class AlarmStates(Enum):
+class AlarmState(Enum):
     DISARMED = "disarmed"
     PART_ARMED = "armed_home"
     ARMED = "armed_away"

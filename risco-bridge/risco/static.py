@@ -12,7 +12,7 @@ ENDPOINTS = {
 }
 
 
-class AlarmCommands(Enum):
+class AlarmCommand(Enum):
     ARM = "armed"
     DISARM = "disarmed"
     PARTARM = "partially"

@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from hass.static import AlarmStates
+from hass.static import AlarmState
 from risco.auth import PinAuth, UserAuth
 from risco.risco_cloud_handler import RiscoCloudHandler
 
@@ -35,4 +35,4 @@ class TestRiscoCloudHandler(unittest.TestCase):
         rch.login()
 
         # Suboptimal, only passes if im home :( Really need to stub the api
-        self.assertEqual(rch.get_arm_status(), AlarmStates.DISARMED)
+        self.assertEqual(rch.get_arm_status(), AlarmState.DISARMED)
