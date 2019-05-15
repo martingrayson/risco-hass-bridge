@@ -1,4 +1,5 @@
 import argparse
+import threading
 import time
 
 from emitter.mqtt_publisher import MQTTPublisher
@@ -17,13 +18,18 @@ class RiscoHassBridge(LoggingMixin):
         self.poll_interval = poll_interval
         self.logger.debug("Initialised RiscoHassBridge")
 
-    def run(self):
+    def monitor_state(self):
         """ Loop and monitor state of the alarm system """
         self.logger.debug("Starting polling loop (%i sec).", self.poll_interval)
 
         while True:
             time.sleep(self.poll_interval)
             self.mqtt_pub.publish_state(self.risco.get_arm_status())
+
+    def run(self):
+        self.logger.debug("Starting up threads")
+        threading.Thread(target=self.monitor_state).start()
+        self.logger.debug("Finished")
 
 
 # TODO Pass log level from hass frontend.
