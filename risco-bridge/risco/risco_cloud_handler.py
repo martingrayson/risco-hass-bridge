@@ -6,8 +6,6 @@ from risco.static import RISCO_BASE_URL, ENDPOINTS, AlarmCommand
 from util.logging_mixin import LoggingMixin
 
 
-# TODO: This credential handling is dumb, maybe use marshmallo with 2 schemas and one auth object.
-
 class RiscoCloudHandler(LoggingMixin):
     """
     Handle all interaction with the Risco Cloud.

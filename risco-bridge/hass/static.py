@@ -4,6 +4,7 @@ from risco.static import AlarmCommand as RiscoAlarmCommands
 
 
 class AlarmState(Enum):
+    """ Enum to model alarm states in Home Assistant """
     DISARMED = "disarmed"
     PART_ARMED = "armed_home"
     ARMED = "armed_away"

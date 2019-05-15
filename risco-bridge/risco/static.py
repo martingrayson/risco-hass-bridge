@@ -1,5 +1,6 @@
 from enum import Enum
 
+""" Risco endpoints """
 RISCO_BASE_URL = "https://www.riscocloud.com/ELAS/WebUI/"
 ENDPOINTS = {
     "AUTH": "",
@@ -11,7 +12,9 @@ ENDPOINTS = {
     "CHECK_EXPIRED": "SystemSettings/IsUserCodeExpired"
 }
 
+
 class AlarmCommand(Enum):
+    """ Enum to model commands issued to change the alarm state """
     ARM = "armed"
     DISARM = "disarmed"
     PARTARM = "partially"

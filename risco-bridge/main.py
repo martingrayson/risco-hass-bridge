@@ -8,17 +8,17 @@ from util.logging_mixin import LoggingMixin
 
 
 class RiscoHassBridge(LoggingMixin):
-
-    def __init__(self, mqtt_host, mqtt_port, mqtt_username, mqtt_password, risco_username,
-                 risco_password, risco_pin, risco_site_id, poll_interval=60):
+    def __init__(self, mqtt_host: str, mqtt_port: int, mqtt_username: str, mqtt_password: str, risco_username: str,
+                 risco_password: str, risco_pin: int, risco_site_id: str, poll_interval=60):
         self.risco = RiscoCloudHandler(UserAuth(risco_username, risco_password),
-                                  PinAuth(risco_pin, risco_site_id))
+                                       PinAuth(risco_pin, risco_site_id))
 
         self.mqtt_pub = MQTTPublisher(mqtt_host, mqtt_port, mqtt_username, mqtt_password)
         self.poll_interval = poll_interval
         self.logger.debug("Initialised RiscoHassBridge")
 
     def run(self):
+        """ Loop and monitor state of the alarm system """
         self.logger.debug("Starting polling loop (%i sec).", self.poll_interval)
 
         while True:
