@@ -23,6 +23,9 @@ class MQTTSubscriber(LoggingMixin):
         self.client.username_pw_set(username=self.username, password=self.password)
 
     def subscribe(self, callback):
+        """ A blocking function to subscribe to the alarm set MQTT topic.
+        :param callback: A callback to execute when a message is received.
+        """
         self.logger.debug("Starting up subscription")
         self.client.on_message = callback
 

@@ -3,6 +3,7 @@ import threading
 import time
 
 from emitter.mqtt_publisher import MQTTPublisher
+from emitter.mqtt_subscriber import MQTTSubscriber
 from risco.auth import UserAuth, PinAuth
 from risco.risco_cloud_handler import RiscoCloudHandler
 from util.logging_mixin import LoggingMixin
@@ -15,21 +16,43 @@ class RiscoHassBridge(LoggingMixin):
                                        PinAuth(risco_pin, risco_site_id))
 
         self.mqtt_pub = MQTTPublisher(mqtt_host, mqtt_port, mqtt_username, mqtt_password)
+        self.mqtt_sub = MQTTSubscriber(mqtt_host, mqtt_port, mqtt_username, mqtt_password)
         self.poll_interval = poll_interval
         self.logger.debug("Initialised RiscoHassBridge")
 
     def monitor_state(self):
-        """ Loop and monitor state of the alarm system """
+        """Loop and monitor state of the alarm system"""
         self.logger.debug("Starting polling loop (%i sec).", self.poll_interval)
 
         while True:
             time.sleep(self.poll_interval)
             self.mqtt_pub.publish_state(self.risco.get_arm_status())
 
+    # TODO: Figure out the best way to handle this
+    def monitor_commands(self):
+        def on_message(client, userdata, message):
+            print(message.payload.decode("utf-8"))
+            # print("message received ", str(message.payload.decode("utf-8")))
+            # print("message topic=", message.topic)
+            # print("message qos=", message.qos)
+            # print("message retain flag=", message.retain)
+
+        self.logger.debug("Setting up subscription")
+        self.mqtt_sub.subscribe(on_message)
+
     def run(self):
+        """Start up all our monitoring threads, wait for them to finish."""
         self.logger.debug("Starting up threads")
-        threading.Thread(target=self.monitor_state).start()
-        self.logger.debug("Finished")
+        threads = [threading.Thread(target=self.monitor_state, name="state-checker")]
+
+        for thread in threads:
+            self.logger.debug("Starting %s thread", thread.name)
+            thread.start()
+
+        for thread in threads:
+            thread.join()
+
+        self.logger.debug("All threads complete")
 
 
 # TODO Pass log level from hass frontend.

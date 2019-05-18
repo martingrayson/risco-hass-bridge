@@ -1,6 +1,6 @@
 from enum import Enum
 
-""" Risco endpoints """
+"""Risco endpoints"""
 RISCO_BASE_URL = "https://www.riscocloud.com/ELAS/WebUI/"
 ENDPOINTS = {
     "AUTH": "",
@@ -14,7 +14,7 @@ ENDPOINTS = {
 
 
 class AlarmCommand(Enum):
-    """ Enum to model commands issued to change the alarm state """
+    """Enum to model commands issued to change the alarm state"""
     ARM = "armed"
     DISARM = "disarmed"
     PARTARM = "partially"

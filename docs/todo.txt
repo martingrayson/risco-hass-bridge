@@ -3,3 +3,6 @@
 - dont store config in other repo
 
 --- crashed at one point - why? think app died in container as the container was still up.
+
+
+--setup mosquito locally

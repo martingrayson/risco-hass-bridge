@@ -20,8 +20,10 @@ class MQTTPublisher(LoggingMixin):
         if password:
             self.auth['password'] = self.password
 
-    # TODO: topic should be param
     def publish_state(self, state: AlarmState):
+        """Publish an alarm state to MQTT.
+        :param state: an AlarmState to broadcast.
+        """
         if state in AlarmState:
             self.logger.debug(f"Publishing state %s to %s ", state.value, self.host)
             return publish.single(MQTTPublisher._STATE_TOPIC, state.value,

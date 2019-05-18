@@ -7,13 +7,10 @@ from util.logging_mixin import LoggingMixin
 
 
 class RiscoCloudHandler(LoggingMixin):
-    """
-    Handle all interaction with the Risco Cloud.
-    """
+    """Handle all interaction with the Risco Cloud."""
 
     def __init__(self, user_auth, pin_auth):
-        """
-        Construct a handler using the supplied credentials.
+        """Construct a handler using the supplied credentials.
         :param user_auth:
         :param pin_auth:
         """
@@ -22,14 +19,12 @@ class RiscoCloudHandler(LoggingMixin):
         self.pin_auth = pin_auth
 
     def __del__(self):
-        """
-        Kill session on closing up.
-        """
+        """Kill session on closing up."""
         if self.session:
             self.session.close()
 
     def login(f):
-        """ Decorator to handle logging into Risco """
+        """Decorator to handle logging into Risco"""
         def deco(self):
             self.logger.info("Decorating login")
             self._login()
@@ -37,9 +32,7 @@ class RiscoCloudHandler(LoggingMixin):
         return deco
 
     def _login(self):
-        """
-        If session has expired, start a new session and login using password and pin.
-        """
+        """If session has expired, start a new session and login using password and pin."""
         if self._is_expired():
             self.session.close()
             self.session = requests.session()
@@ -49,9 +42,7 @@ class RiscoCloudHandler(LoggingMixin):
 
     @retry(wait=wait_exponential(multiplier=1, min=4, max=10))
     def _authenticate(self):
-        """
-        First stage in authentication with Risco.
-        """
+        """First stage in authentication with Risco."""
         endpoint = RISCO_BASE_URL + ENDPOINTS['AUTH']
         self.logger.debug("Hitting: %s" % endpoint)
         resp = self.session.post(endpoint, data=self.user_auth.to_json())
@@ -61,9 +52,7 @@ class RiscoCloudHandler(LoggingMixin):
 
     @retry(wait=wait_exponential(multiplier=1, min=4, max=10))
     def _select_site(self):
-        """
-        Second stage of authentication with Risco. Selects and activates a site.
-        """
+        """Second stage of authentication with Risco. Selects and activates a site."""
         endpoint = RISCO_BASE_URL + ENDPOINTS['SITE_SELECT']
         self.logger.debug("Hitting: %s" % endpoint)
         resp = self.session.post(endpoint, data=self.pin_auth.to_json())
@@ -72,8 +61,7 @@ class RiscoCloudHandler(LoggingMixin):
         return resp
 
     def _is_expired(self) -> bool:
-        """
-        Checks the Risco endpoint to verify if our session is still active. Any connection errors also return False.
+        """Checks the Risco endpoint to verify if our session is still active. Any connection errors also return False.
         :return: True if session has expired. False otherwise.
         """
         endpoint = RISCO_BASE_URL + ENDPOINTS['CHECK_EXPIRED']
@@ -97,8 +85,7 @@ class RiscoCloudHandler(LoggingMixin):
     @retry(wait=wait_exponential(multiplier=1, min=4, max=10))
     @login
     def _get_overview(self) -> dict:
-        """
-        Hits the get overview endpoint, returns the json response for downstream mapping into internal states.
+        """Hits the get overview endpoint, returns the json response for downstream mapping into internal states.
         :return: The raw json response in dict form from Risco.
         """
         endpoint = RISCO_BASE_URL + ENDPOINTS['GET_OVERVIEW']
@@ -109,8 +96,7 @@ class RiscoCloudHandler(LoggingMixin):
         return resp.json()
 
     def get_arm_status(self) -> AlarmState:
-        """
-        Interprets the Risco get overview function to deterimine if the first partition in the alarm system is
+        """Interprets the Risco get overview function to deterimine if the first partition in the alarm system is
         armed, disarmed or part armed.
         :return: an AlarmState object representing the current state of the system
         """
@@ -134,8 +120,7 @@ class RiscoCloudHandler(LoggingMixin):
     @retry(wait=wait_exponential(multiplier=1, min=4, max=10))
     @login
     def set_arm_status(self, arm_status: AlarmCommand) -> dict:
-        """
-        Sets the alarms arm status, either disarming, arming or part arming the system.
+        """Sets the alarms arm status, either disarming, arming or part arming the system.
         :param arm_status: an AlarmCommand object representing the desired command to run.
         :return: The raw json response from Risco.
         """
@@ -155,8 +140,7 @@ class RiscoCloudHandler(LoggingMixin):
     @retry(wait=wait_exponential(multiplier=1, min=4, max=10))
     @login
     def get_state(self) -> dict:
-        """
-        Gets the state of the control panel.
+        """Gets the state of the control panel.
         :return: The raw json response from Risco.
         """
         endpoint = RISCO_BASE_URL + ENDPOINTS['GET_CP_STATE'] + "?userIsAlive=true"
