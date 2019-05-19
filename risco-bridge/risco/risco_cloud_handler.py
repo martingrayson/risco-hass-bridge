@@ -14,6 +14,7 @@ class RiscoCloudHandler(LoggingMixin):
         :param user_auth:
         :param pin_auth:
         """
+        self.logger.debug("Setting up RiscoCloudHandler")
         self.session = requests.session()
         self.user_auth = user_auth
         self.pin_auth = pin_auth
@@ -117,22 +118,28 @@ class RiscoCloudHandler(LoggingMixin):
 
         return state
 
+    # WHY wont decorator work?
     @retry(wait=wait_exponential(multiplier=1, min=4, max=10))
-    @login
     def set_arm_status(self, arm_status: AlarmCommand) -> dict:
         """Sets the alarms arm status, either disarming, arming or part arming the system.
         :param arm_status: an AlarmCommand object representing the desired command to run.
         :return: The raw json response from Risco.
         """
+        self._login()
         endpoint = RISCO_BASE_URL + ENDPOINTS['SET_ARM_STATUS']
         self.logger.debug("Hitting: %s" % endpoint)
 
+        code = '' if arm_status == AlarmCommand.ARM else '------'
         data = {
             "type": "0:{}".format(arm_status.value),
             "bypassZoneId": -1,
-            "armcode": ""
+            "passcode": code
         }
         resp = self.session.post(endpoint, data)
+        if resp.json().get('error', 0) > 0:
+            self.logger.error("set_arm_status command failed.")
+            raise Exception("Risco responded with error.")
+
         resp.raise_for_status()
 
         return resp.json()

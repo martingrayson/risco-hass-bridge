@@ -4,6 +4,7 @@ import time
 
 from emitter.mqtt_publisher import MQTTPublisher
 from emitter.mqtt_subscriber import MQTTSubscriber
+from hass.static import AlarmCommand
 from risco.auth import UserAuth, PinAuth
 from risco.risco_cloud_handler import RiscoCloudHandler
 from util.logging_mixin import LoggingMixin
@@ -28,14 +29,17 @@ class RiscoHassBridge(LoggingMixin):
             time.sleep(self.poll_interval)
             self.mqtt_pub.publish_state(self.risco.get_arm_status())
 
+
     # TODO: Figure out the best way to handle this
     def monitor_commands(self):
         def on_message(client, userdata, message):
-            print(message.payload.decode("utf-8"))
-            # print("message received ", str(message.payload.decode("utf-8")))
-            # print("message topic=", message.topic)
-            # print("message qos=", message.qos)
-            # print("message retain flag=", message.retain)
+            message_raw = message.payload.decode("utf-8")
+            self.logger.debug("Got message %s", message_raw)
+            command = AlarmCommand[message_raw].value
+
+            if command:
+                self.logger.debug("Calling set_arm_status with %s", command)
+                self.risco.set_arm_status(command)
 
         self.logger.debug("Setting up subscription")
         self.mqtt_sub.subscribe(on_message)
@@ -43,7 +47,8 @@ class RiscoHassBridge(LoggingMixin):
     def run(self):
         """Start up all our monitoring threads, wait for them to finish."""
         self.logger.debug("Starting up threads")
-        threads = [threading.Thread(target=self.monitor_state, name="state-checker")]
+        threads = [threading.Thread(target=self.monitor_state, name="state-checker"),
+                   threading.Thread(target=self.monitor_commands, name="command-checker")]
 
         for thread in threads:
             self.logger.debug("Starting %s thread", thread.name)
