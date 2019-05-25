@@ -1,8 +1,5 @@
 - Fix build process. Tagging is a pita
-- Actually integrate the code, first get the risco polling working.
-- dont store config in other repo
-
---- crashed at one point - why? think app died in container as the container was still up.
-
+- Dont store config in other repo
+- Triggered State
 
 --setup mosquito locally

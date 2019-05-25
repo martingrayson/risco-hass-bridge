@@ -24,7 +24,7 @@ class TestRiscoCloudHandler(unittest.TestCase):
 
     def test_get_state(self):
         rch = RiscoCloudHandler(self.user, self.pin)
-        resp = rch.get_state()
+        resp = rch._get_state()
 
         # shitty test
         self.assertTrue('IsOffline' in resp)

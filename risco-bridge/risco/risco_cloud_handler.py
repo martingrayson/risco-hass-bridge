@@ -112,8 +112,17 @@ class RiscoCloudHandler(LoggingMixin):
             self.logger.error("Missing status keys in overview.")
             self.logger.error(json.dumps(sys_overview))
 
+        # We have to call another endpoint to see if the alarm has been triggered.
+        sys_state = self._get_state()
+        is_triggered = False
+        if sys_state:
+            is_triggered = sys_state.get('OngoingAlarm', False)
+
         # Currently unable to cope with partitions being in different states.
         state = AlarmState.UNKNOWN
+
+        if is_triggered:
+            state = AlarmState.TRIGGERED
         if int(part_info.get('armedStr')[0]) > 0:
             state = AlarmState.ARMED
         elif int(part_info.get('disarmedStr')[0]) > 0:
@@ -153,7 +162,7 @@ class RiscoCloudHandler(LoggingMixin):
 
     @retry(wait=wait_exponential(multiplier=1, min=4, max=10))
     @login
-    def get_state(self) -> dict:
+    def _get_state(self) -> dict:
         """Gets the state of the control panel.
         :return: The raw json response from Risco.
         """
