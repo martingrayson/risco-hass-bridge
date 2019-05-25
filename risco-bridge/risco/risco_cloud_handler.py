@@ -1,3 +1,5 @@
+import json
+
 import requests
 from tenacity import wait_exponential, retry
 
@@ -97,16 +99,21 @@ class RiscoCloudHandler(LoggingMixin):
         return resp.json()
 
     def get_arm_status(self) -> AlarmState:
-        """Interprets the Risco get overview function to deterimine if the first partition in the alarm system is
+        """Interprets the Risco get overview function to determine if the first partition in the alarm system is
         armed, disarmed or part armed.
         :return: an AlarmState object representing the current state of the system
         """
         sys_overview = self._get_overview()
-        part_info = sys_overview.get('overview', {}).get('partInfo', {})
+        part_info = {}
+        if sys_overview:
+            part_info = sys_overview.get('overview', {}).get('partInfo', {})
+
+        if not all(name in part_info for name in ['armedStr', 'disarmedStr', 'partarmedStr']):
+            self.logger.error("Missing status keys in overview.")
+            self.logger.error(json.dumps(sys_overview))
 
         # Currently unable to cope with partitions being in different states.
-        # TODO: Not well guarded, change this.
-        state = None
+        state = AlarmState.UNKNOWN
         if int(part_info.get('armedStr')[0]) > 0:
             state = AlarmState.ARMED
         elif int(part_info.get('disarmedStr')[0]) > 0:

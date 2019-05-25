@@ -9,6 +9,7 @@ class AlarmState(Enum):
     PART_ARMED = "armed_home"
     ARMED = "armed_away"
     TRIGGERED = "triggered"
+    UNKNOWN = "unknown"
 
 
 # this is dumb, we're mapping hass enums to risco ones
