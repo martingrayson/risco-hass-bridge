@@ -69,7 +69,7 @@ def main():
     parser.add_argument('--risco_pin', required=True)
     parser.add_argument('--risco_site_id', required=True)
     parser.add_argument('--poll_interval', type=int, default=60, required=False)
-    parser.add_argument('--log-level', required=False) #TODO: Implement
+    #parser.add_argument('--log-level', required=False) #TODO: Implement
 
     args = parser.parse_args()
     bridge = RiscoHassBridge(**vars(args))
