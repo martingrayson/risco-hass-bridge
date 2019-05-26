@@ -106,7 +106,8 @@ class RiscoCloudHandler(LoggingMixin):
         sys_overview = self._get_overview()
         part_info = {}
         if sys_overview:
-            part_info = sys_overview.get('overview', {}).get('partInfo', {})
+            part_info = sys_overview.get('overview', {})
+            part_info = part_info.get('partInfo', {})
 
         if not all(name in part_info for name in ['armedStr', 'disarmedStr', 'partarmedStr']):
             self.logger.error("Missing status keys in overview.")

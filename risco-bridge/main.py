@@ -29,8 +29,6 @@ class RiscoHassBridge(LoggingMixin):
             time.sleep(self.poll_interval)
             self.mqtt_pub.publish_state(self.risco.get_arm_status())
 
-
-    # TODO: Figure out the best way to handle this
     def monitor_commands(self):
         def on_message(client, userdata, message):
             message_raw = message.payload.decode("utf-8")
@@ -60,7 +58,6 @@ class RiscoHassBridge(LoggingMixin):
         self.logger.debug("All threads complete")
 
 
-# TODO Pass log level from hass frontend.
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--mqtt_host', required=True)
@@ -72,6 +69,7 @@ def main():
     parser.add_argument('--risco_pin', required=True)
     parser.add_argument('--risco_site_id', required=True)
     parser.add_argument('--poll_interval', type=int, default=60, required=False)
+    parser.add_argument('--log-level', required=False) #TODO: Implement
 
     args = parser.parse_args()
     bridge = RiscoHassBridge(**vars(args))
