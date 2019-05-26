@@ -3,12 +3,8 @@ set -ev
 
 if [ ! -z ${TRAVIS_TAG} ]; then
     echo "Tagged build found. Pushing to Docker with tag 'latest'."
+    echo "${TRAVIS_TAG}"
 else
-    # DIFF="$(git diff HEAD^ HEAD dropbox-sync)"
-    # if [ -z $DIFF ]; then
-    #     echo "No changes in Dropbox Sync add-on. Skipping docker push."
-    #     exit 0
-    # fi
     echo "No tag found. Pushing to Docker with tag 'test'."
 fi
 
@@ -28,5 +24,4 @@ docker run -it --rm --privileged --name "risco-hass-bridge" \
     --push \
     --from "homeassistant/{arch}-base" \
     --author "Martin Grayson <martin@mgrayson.co.uk>" \
-    --tag-latest \
     --doc-url "https://github.com/martingrayson/risco-hass-bridge"

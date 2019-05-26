@@ -14,7 +14,6 @@ docker run -it --privileged --rm --name "risco-hass-bridge" \
     --$ARCH \
     --from "homeassistant/{arch}-base" \
     --author "Martin Grayson <martin@mgrayson.co.uk>" \
-    --tag-latest \
     --doc-url "https://github.com/martingrayson/risco-hass-bridge" \
     -d "Risco HASS Bridge"
 
