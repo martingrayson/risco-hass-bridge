@@ -16,9 +16,9 @@ The MQTT configuration is fairly self explanatory:
 ```json
 "mqtt": {
       "host": "localhost",
-      "port": 1883, # Optional, defaults to 1883
-      "username": "test", # Optional username to connect to MQTT
-      "password": "test" # Optional password to connect to MQTT
+      "port": 1883,
+      "username": "Optional username to connect to MQTT",
+      "password": "Optional password to connect to MQTT" 
     }
 ```
 
