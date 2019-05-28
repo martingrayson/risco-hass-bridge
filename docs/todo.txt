@@ -1,5 +1,5 @@
-- Fix build process. Tagging is a pita
 - Dont store config in other repo
-- Triggered State
+- Better tests
+- Change poll interval after command
 
 --setup mosquito locally
