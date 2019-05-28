@@ -12,7 +12,7 @@ Another status checker thread polls the Risco API to check the status of your al
 ## Configuration
 The configuration of the plugin is fairly straight forward. You'll need a [Risco Cloud](https://www.riscocloud.com/ELAS/WebUI/) login and an MQTT Broker configured.
 
-The MQTT configuration is fairly self explanatory:
+The MQTT configuration is self explanatory:
 ```json
 "mqtt": {
       "host": "localhost",
@@ -22,7 +22,7 @@ The MQTT configuration is fairly self explanatory:
     }
 ```
 
-It is advisable to create a dedicated service account for this application to use, you can create a new account within the [Web UI]](https://www.riscocloud.com/ELAS/WebUI/). The `username`, `password` and `pin` can be added to the plugin config as below:
+Within the Risco Could, it is advisable to create a dedicated service account for this application to use, you can create a new account within the [Web UI](https://www.riscocloud.com/ELAS/WebUI/). The `username`, `password` and `pin` can be added to the plugin config as below:
 ```json
 "risco": {
       "username": "user@test.com",
