@@ -1,4 +1,4 @@
 paho-mqtt==1.4.0
-requests==2.21.0
+requests==2.31.0
 argparse==1.4.0
 tenacity==5.0.4
